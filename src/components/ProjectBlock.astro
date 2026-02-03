@@ -1,0 +1,314 @@
+---
+const { title, description, tags, youtubeId, imageUrl, reverse = false } = Astro.props;
+---
+
+<div class:list={["project-block", { reverse }]}>
+  <div class="project-info">
+    <div class="project-content">
+      <h3 class="project-title">{title}</h3>
+      <p class="project-description">{description}</p>
+      <div class="project-tags">
+        {tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+  
+  <div class="project-preview">
+    <div class="preview-container" data-youtube-id={youtubeId}>
+      <img 
+        src={imageUrl} 
+        alt={`${title} preview`} 
+        class="preview-image"
+        loading="lazy"
+      />
+      <button class="play-button" aria-label={`Play ${title} demo video`}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="play-icon">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Video Modal -->
+<div class="video-modal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <button class="modal-close" aria-label="Close video">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
+    <div class="video-wrapper">
+      <iframe 
+        class="video-iframe"
+        src=""
+        title={`${title} demo video`}
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+<style>
+  .project-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--gradient-subtle);
+    border: 1px solid var(--gray-800);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .project-block:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  @media (min-width: 50em) {
+    .project-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      padding: 2.5rem;
+    }
+
+    .project-block.reverse {
+      direction: rtl;
+    }
+
+    .project-block.reverse > * {
+      direction: ltr;
+    }
+  }
+
+  .project-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .project-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .project-title {
+    font-size: var(--text-2xl);
+    color: var(--gray-0);
+    margin: 0;
+  }
+
+  .project-description {
+    font-size: var(--text-md);
+    color: var(--gray-300);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .tag {
+    padding: 0.35rem 0.75rem;
+    background: var(--accent-overlay);
+    color: var(--accent-text-over);
+    border-radius: 9999px;
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .project-preview {
+    position: relative;
+  }
+
+  .preview-container {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 16 / 9;
+    background: var(--gray-900);
+  }
+
+  .preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .preview-container:hover .preview-image {
+    transform: scale(1.05);
+    filter: brightness(0.7);
+  }
+
+  .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent-regular);
+    color: var(--gray-999);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+    box-shadow: var(--shadow-md);
+  }
+
+  .play-button:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: var(--accent-dark);
+  }
+
+  .play-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: 0.25rem;
+  }
+
+  /* Modal Styles */
+  .video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .video-modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+  .modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+
+  .video-modal.active .modal-content {
+    transform: scale(1);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: -3rem;
+    right: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--gray-800);
+    color: var(--gray-0);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+  }
+
+  .modal-close:hover {
+    background: var(--accent-regular);
+  }
+
+  .modal-close svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--gray-900);
+  }
+
+  .video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const projectBlocks = document.querySelectorAll('.project-block');
+
+    projectBlocks.forEach((block) => {
+      const previewContainer = block.querySelector('.preview-container') as HTMLElement;
+      const playButton = block.querySelector('.play-button');
+      const modal = block.querySelector('.video-modal') as HTMLElement;
+      const modalBackdrop = modal?.querySelector('.modal-backdrop');
+      const modalClose = modal?.querySelector('.modal-close');
+      const videoIframe = modal?.querySelector('.video-iframe') as HTMLIFrameElement;
+
+      const youtubeId = previewContainer?.dataset.youtubeId;
+
+      const openModal = () => {
+        if (modal && videoIframe && youtubeId) {
+          videoIframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      };
+
+      const closeModal = () => {
+        if (modal && videoIframe) {
+          modal.classList.remove('active');
+          videoIframe.src = '';
+          document.body.style.overflow = '';
+        }
+      };
+
+      previewContainer?.addEventListener('click', openModal);
+      playButton?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModal();
+      });
+      modalBackdrop?.addEventListener('click', closeModal);
+      modalClose?.addEventListener('click', closeModal);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal?.classList.contains('active')) {
+          closeModal();
+        }
+      });
+    });
+  });
+</script>

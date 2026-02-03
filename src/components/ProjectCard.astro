@@ -1,0 +1,493 @@
+---
+import Pill from "./Pill.astro";
+
+export interface Props {
+    title: string;
+    description: string;
+    projectUrl: string;
+    githubUrl?: string;
+    videoId: string;
+    previewImage: string;
+    technologies: string[];
+}
+
+const {
+    title,
+    description,
+    projectUrl,
+    githubUrl,
+    videoId,
+    previewImage,
+    technologies,
+} = Astro.props;
+---
+
+<div class="project-card">
+    <div class="project-header">
+        <h2 class="project-title">{title}</h2>
+        <p class="project-description">{description}</p>
+    </div>
+
+    <div class="project-content">
+        <!-- Project Preview -->
+        <div class="project-preview">
+            <a
+                href={projectUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="preview-link"
+                title={`View ${title} live`}
+            >
+                <div class="preview-container">
+                    <img
+                        src={previewImage}
+                        alt={`${title} preview`}
+                        class="preview-image"
+                        onerror="this.src='/assets/placeholder-project.jpg'"
+                    />
+                    <div class="preview-overlay">
+                        <div class="preview-content">
+                            <ion-icon name="globe-outline" class="preview-icon"
+                            ></ion-icon>
+                            <span class="preview-text">View Live Project</span>
+                            <div class="preview-arrow">
+                                <ion-icon name="arrow-forward-outline"
+                                ></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-label">
+                    <ion-icon name="link-outline"></ion-icon>
+                    <span>Live Demo</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Video Demo -->
+        <div class="video-demo">
+            <div class="video-container">
+                <iframe
+                    src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                    title={`${title} Demo Video`}
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    class="demo-video"
+                    loading="lazy"
+                >
+                </iframe>
+            </div>
+            <div class="video-label">
+                <ion-icon name="play-circle-outline"></ion-icon>
+                <span>Demo Video</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Links -->
+    <div class="project-actions">
+        {
+            githubUrl && (
+                <a
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="action-btn github-btn"
+                >
+                    <ion-icon name="logo-github" />
+                    <span>Source Code</span>
+                </a>
+            )
+        }
+        <a
+            href={projectUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="action-btn live-btn"
+        >
+            <ion-icon name="open-outline"></ion-icon>
+            <span>Live Site</span>
+        </a>
+    </div>
+
+    <!-- Technology Stack -->
+    <div class="tech-stack">
+        <h3 class="tech-title">
+            <ion-icon name="code-working-outline"></ion-icon>
+            Built With:
+        </h3>
+        <div class="tech-pills">
+            {technologies.map((tech) => <Pill>{tech}</Pill>)}
+        </div>
+    </div>
+</div>
+
+<style>
+    .project-card {
+        background: linear-gradient(
+            135deg,
+            var(--gray-999) 0%,
+            var(--gray-950) 100%
+        );
+        border: 2px solid var(--gray-800);
+        border-radius: 2rem;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .project-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+            90deg,
+            var(--accent-regular),
+            var(--accent-light),
+            var(--accent-regular)
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        border-color: var(--accent-regular);
+    }
+
+    .project-card:hover::before {
+        opacity: 1;
+    }
+
+    /* Project Header */
+    .project-header {
+        margin-bottom: 2rem;
+    }
+
+    .project-title {
+        font-size: var(--text-2xl);
+        color: var(--gray-100);
+        margin-bottom: 1rem;
+        font-weight: 700;
+        background: linear-gradient(
+            135deg,
+            var(--gray-100),
+            var(--accent-light)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .project-description {
+        color: var(--gray-300);
+        font-size: var(--text-base);
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    /* Project Content Layout */
+    .project-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .project-content {
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+        }
+    }
+
+    /* Project Preview */
+    .project-preview {
+        position: relative;
+    }
+
+    .preview-container {
+        position: relative;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        background: var(--gray-800);
+        aspect-ratio: 16 / 10;
+        border: 2px solid var(--gray-700);
+        transition: all 0.3s ease;
+    }
+
+    .preview-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .preview-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .preview-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.8),
+            rgba(0, 0, 0, 0.6)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(2px);
+    }
+
+    .preview-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        color: white;
+        text-align: center;
+        transform: translateY(10px);
+        transition: transform 0.3s ease;
+    }
+
+    .preview-icon {
+        font-size: 2.5rem;
+        opacity: 0.9;
+    }
+
+    .preview-text {
+        font-size: var(--text-lg);
+        font-weight: 600;
+    }
+
+    .preview-arrow {
+        padding: 0.5rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .preview-link:hover .preview-container {
+        border-color: var(--accent-regular);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .preview-link:hover .preview-image {
+        transform: scale(1.1);
+    }
+
+    .preview-link:hover .preview-overlay {
+        opacity: 1;
+    }
+
+    .preview-link:hover .preview-content {
+        transform: translateY(0);
+    }
+
+    .preview-label,
+    .video-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        color: var(--gray-400);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        justify-content: center;
+    }
+
+    .preview-label ion-icon,
+    .video-label ion-icon {
+        font-size: 1.1em;
+        color: var(--accent-regular);
+    }
+
+    /* Video Demo */
+    .video-demo {
+        position: relative;
+    }
+
+    .video-container {
+        border-radius: 1.25rem;
+        overflow: hidden;
+        background: var(--gray-800);
+        aspect-ratio: 16 / 10;
+        border: 2px solid var(--gray-700);
+        transition: all 0.3s ease;
+    }
+
+    .video-container:hover {
+        border-color: var(--accent-regular);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .demo-video {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* Project Actions */
+    .project-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.875rem 1.25rem;
+        border-radius: 0.75rem;
+        text-decoration: none;
+        font-size: var(--text-sm);
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 2px solid;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .github-btn {
+        background: var(--gray-800);
+        color: var(--gray-200);
+        border-color: var(--gray-700);
+    }
+
+    .github-btn:hover {
+        background: var(--gray-700);
+        color: white;
+        border-color: var(--gray-600);
+        transform: translateY(-2px);
+    }
+
+    .live-btn {
+        background: linear-gradient(
+            135deg,
+            var(--accent-regular),
+            var(--accent-dark)
+        );
+        color: white;
+        border-color: var(--accent-regular);
+    }
+
+    .live-btn:hover {
+        background: linear-gradient(
+            135deg,
+            var(--accent-light),
+            var(--accent-regular)
+        );
+        border-color: var(--accent-light);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(var(--accent-regular-rgb), 0.4);
+    }
+
+    /* Technology Stack */
+    .tech-stack {
+        border-top: 2px solid var(--gray-800);
+        padding-top: 2rem;
+    }
+
+    .tech-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: var(--text-lg);
+        color: var(--gray-200);
+        margin-bottom: 1.25rem;
+        font-weight: 600;
+    }
+
+    .tech-title ion-icon {
+        color: var(--accent-regular);
+        font-size: 1.2em;
+    }
+
+    .tech-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .project-card {
+            padding: 2rem;
+        }
+
+        .project-title {
+            font-size: var(--text-xl);
+        }
+
+        .project-description {
+            font-size: var(--text-sm);
+        }
+
+        .project-content {
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-title {
+            font-size: var(--text-base);
+        }
+
+        .action-btn {
+            padding: 0.75rem 1rem;
+            font-size: var(--text-xs);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .project-card {
+            padding: 1.5rem;
+        }
+
+        .project-actions {
+            flex-direction: column;
+        }
+
+        .action-btn {
+            justify-content: center;
+        }
+    }
+
+    /* Icon styles */
+    ion-icon {
+        font-size: 1.2em;
+    }
+
+    /* Animation for better UX */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .project-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+</style>
