@@ -39,9 +39,9 @@ First, make sure your project is deployed and accessible:
 # Example deployment to Vercel
 npx vercel --prod
 
-# Or to Netlify
+# Or build for static hosting
 npm run build
-netlify deploy --prod --dir=dist
+# Then upload the 'dist' folder to your hosting provider
 ```
 
 ### 2. Create a Demo Video (Optional)
@@ -132,7 +132,7 @@ export const projects: Project[] = [
 ### For Different Project Types:
 
 **Web Apps:**
-- Use your deployment URL (Vercel, Netlify, etc.)
+- Use your deployment URL (Vercel, GitHub Pages, etc.)
 - Include GitHub link if it's public
 
 **Mobile Apps:**

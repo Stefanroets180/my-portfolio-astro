@@ -57,7 +57,7 @@ export const projects: Project[] = [
     title: "E-Commerce Dashboard",
     description:
       "Comprehensive e-commerce analytics dashboard with real-time sales tracking, inventory management, customer analytics, and automated reporting. Features interactive charts and data visualization for business insights.",
-    projectUrl: "https://demo-ecommerce-dashboard.netlify.app",
+    projectUrl: "https://demo-ecommerce-dashboard.vercel.app",
     githubUrl: "https://github.com/yourusername/ecommerce-dashboard",
     videoId: "6stlCkUDG_s", // Placeholder for dashboard demo
     previewImage: "/assets/projects/ecommerce-preview.jpg",
@@ -126,7 +126,7 @@ export const projects: Project[] = [
     title: "Cryptocurrency Tracker",
     description:
       "Real-time cryptocurrency portfolio tracker with price alerts, market analysis, trading history, and performance metrics. Features dark/light themes, customizable watchlists, and detailed coin information.",
-    projectUrl: "https://crypto-tracker-advanced.netlify.app",
+    projectUrl: "https://crypto-tracker-advanced.vercel.app",
     githubUrl: "https://github.com/yourusername/crypto-tracker",
     videoId: "YQHsXMglC9A", // Placeholder for crypto app demo
     previewImage: "/assets/projects/fitness-preview.jpg",

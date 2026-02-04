@@ -5,55 +5,27 @@ export default function ResumeButton() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDownload = async () => {
+  const handleDownload = () => {
     setIsDownloading(true);
     setError(null);
 
     try {
-      const response = await fetch("/api/download-resume", {
-        method: "GET",
-        headers: {
-          Accept: "application/pdf",
-        },
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          errorText || `Failed to download resume (${response.status})`,
-        );
-      }
-
-      // Check if response is actually a PDF
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/pdf")) {
-        throw new Error("Invalid file format received");
-      }
-
-      // Get the file as a blob
-      const blob = await response.blob();
-
-      // Create a download link and trigger download
-      const url = window.URL.createObjectURL(blob);
+      // Create a download link for the PDF in the public folder
       const link = document.createElement("a");
-      link.href = url;
+      link.href = "/resume.pdf";
       link.download = "Stefan_Roets_Resume.pdf";
+      link.target = "_blank";
       document.body.appendChild(link);
       link.click();
-
-      // Cleanup
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
 
-      // Optional: Show success message briefly
+      // Show brief success state
       setTimeout(() => {
         setError(null);
-      }, 3000);
+      }, 1000);
     } catch (error) {
       console.error("Download error:", error);
-      setError(
-        error instanceof Error ? error.message : "Failed to download resume",
-      );
+      setError("Failed to download resume. Please try again.");
 
       // Clear error after 5 seconds
       setTimeout(() => {

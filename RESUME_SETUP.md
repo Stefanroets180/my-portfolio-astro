@@ -1,168 +1,114 @@
-# Resume Feature Setup Guide
+# Resume Download Setup Guide
 
-This guide will help you set up the resume download feature for your portfolio website deployed on Netlify.
+This guide explains how to set up the resume download feature for your portfolio website.
 
-## Prerequisites
+## Overview
 
-1. **AWS S3 Bucket**: You need an S3 bucket to store your resume PDF
-2. **Netlify Account**: Sign up for a free Netlify account for deployment
-3. **Environment Variables**: Configure the required environment variables in Netlify
-
-## Environment Variables
-
-For local development, create a `.env` file in your project root with the following variables:
-
-```env
-# AWS S3 Configuration
-AWS_REGION=us-east-1
-AWS_ACCESS_KEY_ID=your_aws_access_key_id
-AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
-S3_BUCKET_NAME=your-resume-bucket-name
-S3_RESUME_KEY=resume.pdf
-```
-
-**Important**: For production, you'll configure these as environment variables in the Netlify dashboard (see deployment section below).
+The resume download feature allows visitors to download your resume as a PDF file directly from your website. This is implemented as a simple file download from the public folder - no server-side functionality required.
 
 ## Setup Steps
 
-### 1. AWS S3 Setup
+### 1. Add Your Resume PDF
 
-1. **Create an S3 Bucket**:
-   - Go to AWS S3 Console
-   - Keep default settings for security
+1. **Prepare your resume**:
+   - Export your resume as a PDF file
+   - Name it `resume.pdf`
+   - Ensure the file size is reasonable (under 5MB for faster downloads)
 
-2. **Upload Your Resume**:
-   - Upload your resume PDF to the bucket
-   - Name it `resume.pdf` or update the `S3_RESUME_KEY` variable
+2. **Add to the project**:
+   - Place the `resume.pdf` file in the `public` folder:
+   ```
+   public/
+   └── resume.pdf
+   ```
 
-3. **Create IAM User**:
-   - Go to AWS IAM Console
-   - Create a new user for programmatic access
-   - Attach the following policy:
+3. **File naming**: The filename should be `resume.pdf` exactly, as the download components expect this path.
 
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject"
-            ],
-            "Resource": "arn:aws:s3:::your-resume-bucket-name/*"
-        }
-    ]
-}
-```
+### 2. Verify the Setup
 
-4. **Get Access Keys**:
-   - Generate access keys for the IAM user
-   - Add them to your environment variables
-   
+1. **Build and test locally**:
+   ```bash
+   pnpm run build
+   pnpm run preview
+   ```
 
-### 2. Netlify Deployment Setup
-
-1. **Connect Repository**:
-   - Go to [netlify.com](https://netlify.com) and log in
-   - Click "Add new site" → "Import an existing project"
-   - Connect your Git repository (GitHub, GitLab, or Bitbucket)
-   - Select your portfolio repository
-
-2. **Configure Build Settings**:
-   - Build command: `npm run build`
-   - Publish directory: `dist`
-   - Node version: 18 or higher
-
-3. **Set Environment Variables**:
-   - In your Netlify site dashboard, go to Site settings → Environment variables
-   - Add the following variables:
-     - `AWS_REGION`: us-east-1
-     - `AWS_ACCESS_KEY_ID`: your_aws_access_key_id
-     - `AWS_SECRET_ACCESS_KEY`: your_aws_secret_access_key
-     - `S3_BUCKET_NAME`: your-resume-bucket-name
-     - `S3_RESUME_KEY`: resume.pdf
-
-### 3. Install Dependencies
-
-Run the following command to install the required dependencies:
-
-```bash
-npm install
-# or
-pnpm install
-# or
-yarn install
-```
-
-### 4. Deploy to Netlify
-
-1. **Deploy**:
-   - After connecting your repository and setting environment variables, Netlify will automatically deploy your site
-   - Future commits to your main branch will trigger automatic deployments
-
-2. **Verify Function Deployment**:
-   - Check that the Netlify function was deployed successfully in the Functions tab of your site dashboard
-   - The `download-resume` function should be listed there
-
-## Testing
-
-1. **Local Testing**:
-   - Make sure your `.env` file is properly configured
-   - Run `npm run dev` to start the development server
-   - Navigate to the About page and test the resume button
-   - Note: In local development, API calls will fail unless you're running the Netlify CLI
-
-2. **Local Testing with Netlify CLI** (Recommended):
-   - Install Netlify CLI: `npm install -g netlify-cli`
-   - Run: `netlify dev`
-   - This will run your site with Netlify functions locally
-
-3. **Production Testing**:
-   - Test the feature after deploying to Netlify
-   - Click the resume button on your About page
+2. **Test the download**:
+   - Visit your local site
+   - Click the "Get My Resume" button
    - Verify the PDF downloads correctly
 
-## Security Notes
+### 3. Customize (Optional)
 
-- Never commit your `.env` file to version control
-- Use IAM policies with minimal required permissions
-- Keep your API keys secure and rotate them regularly
-- Netlify environment variables are encrypted and secure
-- Consider using AWS Secrets Manager for additional security
+If you want to use a different filename or customize the download:
+
+1. **Update the filename**: Edit the `href` and `download` attributes in:
+   - `src/components/ResumeButton.tsx`
+   - `src/components/ResumeModal.tsx`
+
+2. **Example customization**:
+   ```typescript
+   link.href = "/my-custom-resume.pdf";
+   link.download = "John_Doe_Resume_2024.pdf";
+   ```
+
+## How It Works
+
+The resume download feature works through simple client-side JavaScript:
+
+1. When a user clicks the download button
+2. The browser creates a temporary download link
+3. The link points to `/resume.pdf` in the public folder
+4. The file downloads with the filename "Stefan_Roets_Resume.pdf"
+
+## Deployment
+
+Since this uses static file serving, it works with any hosting provider:
+
+- **Vercel**: Files in `public/` are automatically served
+- **Netlify**: Files in `public/` are automatically served  
+- **GitHub Pages**: Files in `public/` are automatically served
+- **Any static host**: Just upload the built `dist/` folder
+
+## Security & Privacy
+
+- No server-side processing required
+- No user data is collected
+- Resume is publicly accessible at `/resume.pdf`
+- Consider the privacy implications of making your resume publicly accessible
 
 ## Troubleshooting
 
-### Common Issues
+**Download not working?**
+1. Ensure `resume.pdf` exists in the `public/` folder
+2. Check browser console for errors
+3. Verify the file isn't corrupted
 
-1. **"Failed to retrieve resume from S3"**:
-   - Check your AWS credentials
-   - Verify the bucket name and file key
-   - Ensure the IAM user has GetObject permission
+**Wrong filename when downloading?**
+- Update the `download` attribute in the components to your preferred filename
 
-2. **"Function not found" or 404 errors**:
-   - Check that the Netlify function deployed correctly
-   - Verify the `_redirects` file is configured properly
-   - Ensure the function file is in the correct location: `netlify/functions/download-resume.ts`
+**File not found (404)?**
+- Double-check the file is in `public/resume.pdf`
+- Ensure you've rebuilt the project after adding the file
 
-3. **"Network error"**:
-   - Check if all environment variables are set in Netlify dashboard
-   - Verify the API endpoint is accessible
-   - Check Netlify function logs for errors
+## Alternative Approaches
 
-### Logs
+If you prefer not to make your resume publicly accessible:
 
-Check the Netlify function logs in your site dashboard under Functions → [function-name] → View logs for detailed error messages.
+1. **Password protection**: Use a hosting service that supports password-protected files
+2. **Contact form**: Replace download with a contact form requesting the resume
+3. **Email gate**: Require email before download (would need server-side functionality)
 
-## Cost Considerations
+## File Structure
 
-- **AWS S3**: Very minimal cost for storing and retrieving a single PDF file
-- **Netlify**: Free tier includes 125K function invocations per month, which should be more than sufficient for portfolio usage
+```
+my-portfolio/
+├── public/
+│   └── resume.pdf          # Your resume file here
+├── src/
+│   └── components/
+│       ├── ResumeButton.tsx    # Main download button
+│       └── ResumeModal.tsx     # Modal with download
+└── README.md
+```
 
-## Future Enhancements
-
-Consider adding:
-- Rate limiting to prevent spam (using Netlify Edge Functions)
-- Analytics tracking for resume requests
-- Different resume versions (e.g., technical vs general)
-- Caching for better performance
-- Email notification when resume is downloaded (using a service like Resend)
+That's it! The resume download feature is now ready to use.
