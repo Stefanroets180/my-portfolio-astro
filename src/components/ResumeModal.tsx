@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, Download } from "lucide-react";
 
 interface ResumeModalProps {
@@ -8,9 +8,44 @@ interface ResumeModalProps {
 
 export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   const [downloading, setDownloading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  const resetModalState = () => {
+    setDownloading(false);
+    setError(null);
+    setSuccess(false);
+  };
+
+  const handleClose = () => {
+    resetModalState();
+    onClose();
+  };
+
+  // Handle escape key press
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isOpen && !downloading) {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen, downloading]);
 
   const handleDownload = () => {
     setDownloading(true);
+    setError(null);
+    setSuccess(false);
 
     try {
       // Create a download link for the PDF in the public folder
@@ -22,12 +57,21 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
       link.click();
       document.body.removeChild(link);
 
-      // Close modal after brief delay
+      // Show success message briefly
+      setSuccess(true);
+
+      // Close modal after showing success
       setTimeout(() => {
-        onClose();
-      }, 500);
+        handleClose();
+      }, 1500);
     } catch (error) {
       console.error("Download error:", error);
+      setError("Failed to download resume. Please try again.");
+
+      // Clear error after 5 seconds
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     } finally {
       setDownloading(false);
     }
@@ -46,9 +90,9 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </h2>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
-            disabled={loading}
+            disabled={downloading}
           >
             <X className="w-6 h-6" />
           </button>
@@ -60,10 +104,22 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             and skills.
           </p>
 
+          {error && (
+            <div className="mb-4 bg-red-50 border border-red-200 text-red-800 text-sm rounded-lg px-4 py-2">
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-4 bg-green-50 border border-green-200 text-green-800 text-sm rounded-lg px-4 py-2">
+              Resume downloaded successfully!
+            </div>
+          )}
+
           <div className="flex gap-3">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               disabled={downloading}
               className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -71,13 +127,22 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </button>
             <button
               onClick={handleDownload}
-              disabled={downloading}
-              className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              disabled={downloading || success}
+              className={`flex-1 px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
+                success
+                  ? "bg-green-600 text-white"
+                  : "bg-blue-600 hover:bg-blue-700 text-white"
+              }`}
             >
               {downloading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   Downloading...
+                </>
+              ) : success ? (
+                <>
+                  <div className="w-4 h-4 text-white">✓</div>
+                  Downloaded!
                 </>
               ) : (
                 <>
