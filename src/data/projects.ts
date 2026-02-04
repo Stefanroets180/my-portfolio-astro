@@ -54,20 +54,20 @@ export const projects: Project[] = [
     technologies: ["React", "Node.js", "Express", "AWS S3", "Multer", "CSS3"],
   },
   {
-    title: "E-Commerce Dashboard",
+    title: "JavaScript Chess Game",
     description:
-      "Comprehensive e-commerce analytics dashboard with real-time sales tracking, inventory management, customer analytics, and automated reporting. Features interactive charts and data visualization for business insights.",
-    projectUrl: "https://demo-ecommerce-dashboard.vercel.app",
-    githubUrl: "https://github.com/yourusername/ecommerce-dashboard",
-    videoId: "6stlCkUDG_s", // Placeholder for dashboard demo
-    previewImage: "/assets/projects/ecommerce-preview.jpg",
+      "Interactive chess game built with vanilla JavaScript featuring complete chess logic, move validation, piece highlighting, and game state management. Includes drag-and-drop functionality, legal move detection, and responsive design for desktop and mobile play.",
+    projectUrl: "https://stefanroets180.github.io/JavaScript_Chess/",
+    githubUrl: "https://github.com/Stefanroets180/JavaScript_Chess",
+    videoId: "6stlCkUDG_s", // Placeholder for chess game demo
+    previewImage: "/assets/projects/java-scrip-chess.png",
     technologies: [
-      "React",
-      "Redux",
-      "Chart.js",
-      "Node.js",
-      "MongoDB",
-      "Material-UI",
+      "JavaScript",
+      "HTML5",
+      "CSS3",
+      "DOM Manipulation",
+      "Game Logic",
+      "Responsive Design",
     ],
   },
   {
