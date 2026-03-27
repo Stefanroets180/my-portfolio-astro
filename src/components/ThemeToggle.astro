@@ -77,39 +77,16 @@ import Icon from './Icon.astro';
 			/** Set the theme to dark/light mode. */
 			const setTheme = (dark: boolean) => {
 				const root = document.documentElement;
-				const body = document.body;
 				
-				// Apply to both html and body for Brave compatibility
 				if (dark) {
 					root.classList.add('theme-dark');
 					root.setAttribute('data-theme', 'dark');
-					if (body) {
-						body.classList.add('theme-dark');
-						body.setAttribute('data-theme', 'dark');
-					}
 				} else {
 					root.classList.remove('theme-dark');
 					root.setAttribute('data-theme', 'light');
-					if (body) {
-						body.classList.remove('theme-dark');
-						body.setAttribute('data-theme', 'light');
-					}
 				}
 				
 				button.setAttribute('aria-pressed', String(dark));
-				
-				// Update color-scheme meta tag
-				const metaColorScheme = document.querySelector('meta[name="color-scheme"]');
-				if (metaColorScheme) {
-					metaColorScheme.setAttribute('content', dark ? 'dark' : 'light');
-				}
-				
-				// Force multiple repaints for Brave and other stubborn browsers
-				void root.offsetHeight;
-				if (body) void body.offsetHeight;
-				requestAnimationFrame(() => {
-					void root.offsetHeight;
-				});
 			};
 
 			// Toggle the theme when a user clicks the button.
