@@ -76,15 +76,15 @@ export const projects: Project[] = [
       "Full-featured project management application with kanban boards, team collaboration, time tracking, and deadline management. Includes real-time notifications, file attachments, and project analytics.",
     projectUrl: "https://spring-boot-next-postgresql-fronten.vercel.app/",
     githubUrl: "https://github.com/Stephan-Roets/spring-boot-next-postgresql-frontend, https://github.com/Stephan-Roets/spring-boot-backend-main",
-    videoId: "MtCbVcEtqwg", // Placeholder for project management demo
+    videoId: "MtCbVcEtqwg",
     previewImage: "/assets/projects/Taskflow.png",
     technologies: [
-      "Vue.js",
-      "Vuex",
-      "Node.js",
-      "Socket.io",
+      "Next.js",
+      "Spring Boot",
       "PostgreSQL",
-      "Vuetify",
+      "TypeScript",
+      "Java",
+      "Vercel",
     ],
   },
   {
@@ -102,6 +102,23 @@ export const projects: Project[] = [
       "CSS3",
       "Service Workers",
       "Geolocation API",
+    ],
+  },
+  {
+    title: "Space Invaders App",
+    description:
+        "Classic arcade-style Space Invaders game built with Python and Pygame. Features enemy wave mechanics, player movement and shooting, collision detection, score tracking, and progressive difficulty levels. Includes retro-style graphics and sound effects.",
+    projectUrl: "https://stefanroets180.github.io/space_inventor_python/",
+    githubUrl: "https://github.com/Stefanroets180/space_inventor_python",
+    videoId: "YR5ApYxkU-U",
+    previewImage: "/assets/projects/space.png",
+    technologies: [
+      "Python",
+      "Pygame",
+      "Game Development",
+      "Collision Detection",
+      "Event Handling",
+      "Graphics",
     ],
   },
 ];
