@@ -267,7 +267,12 @@ const { title, description, tags, youtubeId, imageUrl, reverse = false } = Astro
 </style>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
+  let cleanupFunctions: (() => void)[] = [];
+
+  const initProjectBlocks = () => {
+    cleanupFunctions.forEach(cleanup => cleanup());
+    cleanupFunctions = [];
+
     const projectBlocks = document.querySelectorAll('.project-block');
 
     projectBlocks.forEach((block) => {
@@ -282,33 +287,56 @@ const { title, description, tags, youtubeId, imageUrl, reverse = false } = Astro
 
       const openModal = () => {
         if (modal && videoIframe && youtubeId) {
-          videoIframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
-          modal.classList.add('active');
-          document.body.style.overflow = 'hidden';
+          requestAnimationFrame(() => {
+            videoIframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+          });
         }
       };
 
       const closeModal = () => {
         if (modal && videoIframe) {
-          modal.classList.remove('active');
-          videoIframe.src = '';
-          document.body.style.overflow = '';
+          requestAnimationFrame(() => {
+            modal.classList.remove('active');
+            videoIframe.src = '';
+            document.body.style.overflow = '';
+          });
         }
       };
 
-      previewContainer?.addEventListener('click', openModal);
-      playButton?.addEventListener('click', (e) => {
+      const handlePreviewClick = () => openModal();
+      const handlePlayClick = (e: Event) => {
         e.stopPropagation();
         openModal();
-      });
-      modalBackdrop?.addEventListener('click', closeModal);
-      modalClose?.addEventListener('click', closeModal);
-
-      document.addEventListener('keydown', (e) => {
+      };
+      const handleBackdropClick = () => closeModal();
+      const handleCloseClick = () => closeModal();
+      const handleKeydown = (e: KeyboardEvent) => {
         if (e.key === 'Escape' && modal?.classList.contains('active')) {
           closeModal();
         }
+      };
+
+      previewContainer?.addEventListener('click', handlePreviewClick);
+      playButton?.addEventListener('click', handlePlayClick);
+      modalBackdrop?.addEventListener('click', handleBackdropClick);
+      modalClose?.addEventListener('click', handleCloseClick);
+      document.addEventListener('keydown', handleKeydown);
+
+      cleanupFunctions.push(() => {
+        previewContainer?.removeEventListener('click', handlePreviewClick);
+        playButton?.removeEventListener('click', handlePlayClick);
+        modalBackdrop?.removeEventListener('click', handleBackdropClick);
+        modalClose?.removeEventListener('click', handleCloseClick);
+        document.removeEventListener('keydown', handleKeydown);
       });
     });
+  };
+
+  document.addEventListener('astro:page-load', initProjectBlocks);
+  document.addEventListener('astro:before-swap', () => {
+    cleanupFunctions.forEach(cleanup => cleanup());
+    cleanupFunctions = [];
   });
 </script>

@@ -60,7 +60,7 @@ export const projects: Project[] = [
     projectUrl: "https://stefanroets180.github.io/JavaScript_Chess/",
     githubUrl: "https://github.com/Stefanroets180/JavaScript_Chess",
     videoId: "6stlCkUDG_s", // Placeholder for chess game demo
-    previewImage: "/assets/projects/java-scrip-chess.png",
+    previewImage: "/assets/projects/JavaScript_Chess.png",
     technologies: [
       "JavaScript",
       "HTML5",

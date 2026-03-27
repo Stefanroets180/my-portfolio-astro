@@ -16,6 +16,7 @@ const {
 <meta name="description" property="og:description" content={description} />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
+<meta name="color-scheme" content="light dark" />
 <title>{title}</title>
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -28,20 +29,71 @@ const {
 <script is:inline>
 	// This code is inlined in the head to make dark mode instant & blocking.
 	const getThemePreference = () => {
-		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-			return localStorage.getItem('theme');
+		try {
+			if (typeof localStorage !== 'undefined') {
+				const stored = localStorage.getItem('theme');
+				if (stored) return stored;
+			}
+		} catch (e) {
+			// Brave browser may block localStorage in strict mode
 		}
 		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 	};
+	
+	const applyTheme = (isDark) => {
+		const root = document.documentElement;
+		const body = document.body;
+		
+		// Apply to both html and body for maximum compatibility
+		if (isDark) {
+			root.classList.add('theme-dark');
+			root.setAttribute('data-theme', 'dark');
+			if (body) {
+				body.classList.add('theme-dark');
+				body.setAttribute('data-theme', 'dark');
+			}
+		} else {
+			root.classList.remove('theme-dark');
+			root.setAttribute('data-theme', 'light');
+			if (body) {
+				body.classList.remove('theme-dark');
+				body.setAttribute('data-theme', 'light');
+			}
+		}
+		
+		// Update color-scheme meta tag for Brave
+		const metaColorScheme = document.querySelector('meta[name="color-scheme"]');
+		if (metaColorScheme) {
+			metaColorScheme.setAttribute('content', isDark ? 'dark' : 'light');
+		}
+		
+		// Force multiple repaints for stubborn browsers
+		void root.offsetHeight;
+		if (body) void body.offsetHeight;
+		requestAnimationFrame(() => {
+			void root.offsetHeight;
+		});
+	};
+	
 	const isDark = getThemePreference() === 'dark';
-	document.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
+	applyTheme(isDark);
 
 	if (typeof localStorage !== 'undefined') {
-		// Watch the document element and persist user preference when it changes.
-		const observer = new MutationObserver(() => {
-			const isDark = document.documentElement.classList.contains('theme-dark');
-			localStorage.setItem('theme', isDark ? 'dark' : 'light');
-		});
-		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+		try {
+			// Watch the document element and persist user preference when it changes.
+			const observer = new MutationObserver(() => {
+				const root = document.documentElement;
+				const isDark = root.classList.contains('theme-dark');
+				try {
+					localStorage.setItem('theme', isDark ? 'dark' : 'light');
+				} catch (e) {
+					// Brave may block localStorage
+				}
+				applyTheme(isDark);
+			});
+			observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+		} catch (e) {
+			// Fallback if MutationObserver fails
+		}
 	}
 </script>
