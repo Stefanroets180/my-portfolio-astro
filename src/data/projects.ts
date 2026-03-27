@@ -74,10 +74,10 @@ export const projects: Project[] = [
     title: "Task Management System",
     description:
       "Full-featured project management application with kanban boards, team collaboration, time tracking, and deadline management. Includes real-time notifications, file attachments, and project analytics.",
-    projectUrl: "https://task-manager-pro.herokuapp.com",
-    githubUrl: "https://github.com/yourusername/task-management",
+    projectUrl: "https://spring-boot-next-postgresql-fronten.vercel.app/",
+    githubUrl: "https://github.com/Stephan-Roets/spring-boot-next-postgresql-frontend, https://github.com/Stephan-Roets/spring-boot-backend-main",
     videoId: "MtCbVcEtqwg", // Placeholder for project management demo
-    previewImage: "/assets/projects/taskapp-preview.jpg",
+    previewImage: "/assets/projects/Taskflow.png",
     technologies: [
       "Vue.js",
       "Vuex",
@@ -88,13 +88,13 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "Weather Forecast App",
+    title: "Rain Gauge App",
     description:
       "Interactive weather application with location-based forecasts, detailed weather maps, historical data analysis, and severe weather alerts. Features responsive design, offline capabilities, and 7-day forecasts.",
-    projectUrl: "https://weather-app-advanced.vercel.app",
-    githubUrl: "https://github.com/yourusername/weather-forecast",
+    projectUrl: "https://anton-rainfall-tracker.vercel.app/",
+    githubUrl: "https://github.com/Stephanroets/anton-rainfall-tracker",
     videoId: "wPElVpR1rwA", // Placeholder for weather app demo
-    previewImage: "/assets/projects/weather-preview.jpg",
+    previewImage: "/assets/projects/rain.png",
     technologies: [
       "JavaScript",
       "OpenWeather API",
@@ -102,41 +102,6 @@ export const projects: Project[] = [
       "CSS3",
       "Service Workers",
       "Geolocation API",
-    ],
-  },
-  {
-    title: "Social Media Analytics Platform",
-    description:
-      "Advanced analytics dashboard for social media performance tracking with data visualization, engagement metrics, automated reporting, and competitor analysis across multiple platforms including Instagram, Twitter, and Facebook.",
-    projectUrl: "https://social-analytics-pro.railway.app",
-    githubUrl: "https://github.com/yourusername/social-analytics",
-    videoId: "Ke90Tje7VS0", // Placeholder for analytics demo
-    previewImage: "/assets/projects/analytics-preview.jpg",
-    technologies: [
-      "Python",
-      "Django",
-      "D3.js",
-      "PostgreSQL",
-      "Redis",
-      "Celery",
-      "Docker",
-    ],
-  },
-  {
-    title: "Cryptocurrency Tracker",
-    description:
-      "Real-time cryptocurrency portfolio tracker with price alerts, market analysis, trading history, and performance metrics. Features dark/light themes, customizable watchlists, and detailed coin information.",
-    projectUrl: "https://crypto-tracker-advanced.vercel.app",
-    githubUrl: "https://github.com/yourusername/crypto-tracker",
-    videoId: "YQHsXMglC9A", // Placeholder for crypto app demo
-    previewImage: "/assets/projects/fitness-preview.jpg",
-    technologies: [
-      "React",
-      "TypeScript",
-      "CoinGecko API",
-      "Recharts",
-      "Local Storage",
-      "Styled Components",
     ],
   },
 ];
