@@ -123,7 +123,7 @@ export const projects: Project[] = [
     projectUrl: "https://melodious-gumdrop-17ca66.netlify.app/",
     githubUrl: "https://github.com/Stephan-Roets/marble-race-game",
     videoId: "MtCbVcEtqwg",
-    previewImage: "/assets/projects/Marble_Racer.pngg",
+    previewImage: "/assets/projects/Marble_Racer.png",
     technologies: [
       "React",
       "Three.js",
