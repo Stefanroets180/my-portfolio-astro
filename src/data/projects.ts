@@ -117,6 +117,26 @@ export const projects: Project[] = [
     ],
   },
   {
+    title: "Marble Racer",
+    description:
+        "3D marble racing game built with React Three Fiber featuring realistic physics simulation, post-processing effects, and dynamic obstacle courses. Players navigate a marble through challenging tracks with gravity-based mechanics and performance-optimized rendering.",
+    projectUrl: "https://melodious-gumdrop-17ca66.netlify.app/",
+    githubUrl: "https://github.com/Stephan-Roets/marble-race-game",
+    videoId: "MtCbVcEtqwg",
+    previewImage: "/assets/projects/marble-racer.png",
+    technologies: [
+      "React",
+      "Three.js",
+      "React Three Fiber",
+      "React Three Drei",
+      "React Three Rapier",
+      "Zustand",
+      "Vite",
+      "3D Graphics",
+      "Physics Simulation",
+    ],
+  },
+  {
     title: "Space Invaders App",
     description:
         "Classic arcade-style Space Invaders game built with Python and Pygame. Features enemy wave mechanics, player movement and shooting, collision detection, score tracking, and progressive difficulty levels. Includes retro-style graphics and sound effects.",
