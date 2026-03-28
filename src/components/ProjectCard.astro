@@ -59,13 +59,13 @@ const {
                 </div>
                 <div class="preview-label">
                     <ion-icon name="link-outline"></ion-icon>
-                    <span>Live Demo</span>
+                    <span>Live Application</span>
                 </div>
             </a>
         </div>
 
-        <!-- Video Demo -->
-        <div class="video-demo">
+        <!-- Video Demo - COMMENTED OUT FOR NOW -->
+        <!-- <div class="video-demo">
             <div class="video-container">
                 <iframe
                     src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
@@ -82,7 +82,7 @@ const {
                 <ion-icon name="play-circle-outline"></ion-icon>
                 <span>Demo Video</span>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Project Links -->
@@ -195,23 +195,32 @@ const {
     }
 
     /* Project Content Layout */
+    /* NOTE: When YouTube videos are re-enabled, change back to:
+       grid-template-columns: 1fr 1fr; (for desktop)
+       This will restore the side-by-side layout */
     .project-content {
         display: grid;
         grid-template-columns: 1fr;
         gap: 2rem;
         margin-bottom: 2.5rem;
+        justify-items: center;
     }
 
     @media (min-width: 768px) {
         .project-content {
-            grid-template-columns: 1fr 1fr;
+            /* Centered single column - change to 'grid-template-columns: 1fr 1fr;' when YouTube is re-enabled */
+            grid-template-columns: 1fr;
             gap: 2.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
     }
 
     /* Project Preview */
     .project-preview {
         position: relative;
+        width: 100%;
     }
 
     .preview-container {
@@ -344,11 +353,13 @@ const {
     }
 
     /* Project Actions */
+    /* NOTE: When YouTube videos are re-enabled, remove 'justify-content: space-between;' */
     .project-actions {
         display: flex;
         gap: 1rem;
         margin-bottom: 2rem;
         flex-wrap: wrap;
+        justify-content: space-between;
     }
 
     .action-btn {
@@ -387,6 +398,8 @@ const {
         );
         color: white;
         border-color: var(--accent-regular);
+        /* NOTE: When YouTube videos are re-enabled, remove 'margin-left: auto;' */
+        margin-left: auto;
     }
 
     .live-btn:hover {

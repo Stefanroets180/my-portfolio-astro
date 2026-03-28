@@ -16,24 +16,25 @@ const { title, description, tags, youtubeId, imageUrl, reverse = false } = Astro
   </div>
   
   <div class="project-preview">
-    <div class="preview-container" data-youtube-id={youtubeId}>
+    <div class="preview-container">
       <img 
         src={imageUrl} 
         alt={`${title} preview`} 
         class="preview-image"
         loading="lazy"
       />
-      <button class="play-button" aria-label={`Play ${title} demo video`}>
+      <!-- Play button COMMENTED OUT FOR NOW -->
+      <!-- <button class="play-button" aria-label={`Play ${title} demo video`}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="play-icon">
           <path d="M8 5v14l11-7z"/>
         </svg>
-      </button>
+      </button> -->
     </div>
   </div>
 </div>
 
-<!-- Video Modal -->
-<div class="video-modal" aria-hidden="true">
+<!-- Video Modal - COMMENTED OUT FOR NOW -->
+<!-- <div class="video-modal" aria-hidden="true">
   <div class="modal-backdrop"></div>
   <div class="modal-content">
     <button class="modal-close" aria-label="Close video">
@@ -52,7 +53,7 @@ const { title, description, tags, youtubeId, imageUrl, reverse = false } = Astro
       ></iframe>
     </div>
   </div>
-</div>
+</div> -->
 
 <style>
   .project-block {
