@@ -117,6 +117,25 @@ export const projects: Project[] = [
     ],
   },
   {
+    title: "Recipe Book App",
+    description:
+        "A full-stack recipe management application for storing, organizing, and sharing culinary creations. Features include recipe creation with image upload, ingredient lists, step-by-step instructions, recipe categorization, search functionality, and a clean responsive design for easy browsing on any device.",
+    projectUrl: "https://recipe-book-three-taupe.vercel.app/",
+    githubUrl: "https://github.com/Stephan-Roets/recipe-book",
+    videoId: "YR5ApYxkU-U",
+    previewImage: "/assets/projects/cook-book.png",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "React",
+      "Tailwind CSS",
+      "Vercel",
+      "Image Upload",
+      "Search Functionality",
+    ],
+  },
+
+  {
     title: "Marble Racer",
     description:
         "3D marble racing game built with React Three Fiber featuring realistic physics simulation, post-processing effects, and dynamic obstacle courses. Players navigate a marble through challenging tracks with gravity-based mechanics and performance-optimized rendering.",
